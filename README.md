@@ -1,1 +1,1 @@
-# imc2023-ede
+# Extended DNS Errors: Unlocking the Full Potential of DNS Troubleshooting
