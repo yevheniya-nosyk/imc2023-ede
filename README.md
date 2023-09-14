@@ -1,18 +1,8 @@
 # Extended DNS Errors: Unlocking the Full Potential of DNS Troubleshooting
 
-This repository contains all the instructions to reproduce our IMC-2023 paper on Extended DNS Errors. More information can be found on (project's website)[https://extended-dns-errors.com].
+This repository contains all the instructions to reproduce our IMC-2023 paper on Extended DNS Errors. More information can be found on [project's website](https://extended-dns-errors.com).
 
 ## Prerequisites
-
-### Python
-
-Create the virutal environment and install the requirements:
-
-```bash
-$ python3 -m virtualenv -p python3 .venv
-$ source .venv/bin/activate
-$ pip3 install -r requirements.txt
-```
 
 ### Environment Variables
 
@@ -24,19 +14,15 @@ Register one domain name that we'll use to set up misconfigured DNS zones and pe
 
 ### SSH Keys
 
-Generate a key pair that will be used to connect to different servers involved in the project. Place it somewhere on your system and save the location under `SSH_KEY_PRIVATE` in `.env`:
-
-```bash
-$ ssh-keygen -f extended-errors -t rsa -b 4096
-``` 
+Generate a key pair that will be used to connect to different servers involved in the project. Place it somewhere on your system and save the location under `SSH_KEY_PRIVATE` in `.env`.
 
 ### Go
 
-Install Go (visit https://go.dev/doc/install to get the latest version):
+Install Go (visit https://go.dev/doc/install to get the latest version).
 
 ### zdns
 
-Install `zdns` for the large-scale scan (ensure that it is at the latest version that supports printing EDE codes in results):
+Install `zdns` for the large-scale domain scan (ensure that it is at the latest version that supports EDE):
 
 ```bash
 $ git clone https://github.com/zmap/zdns.git
@@ -52,7 +38,7 @@ Specify how many zdns thread should be used to run the scans inside `ZDNS_THREAD
 
 ### Scanning interfaces
 
-Add one IP address or a comma-sepatared list of source IPs that we will scan from as `SCAN_SOURCE_IPS`. If using multiple addresses, you can generate the list dynamically:
+Variable `SCAN_SOURCE_IPS` should contain one or more comma-separated source IPs to be used for scanning. If using multiple addresses, you can generate the list dynamically:
 
 ```bash
 SCAN_SOURCE_IPS=$(for host in {2..254}; do echo 1.1.1.$host; done | tr '\n' ',' | sed '$ s/.$//')
@@ -74,15 +60,13 @@ Apart from 4 pieces of software installed, we will also test 3 big public DNS re
 
 ### Resolver for the Domain Scan
 
-Choose one EDE-compliant resolver that will be used for a large-scale domain scan and save it under `RESOLVER_DOMAIN_SCAN`.
+Choose one EDE-compliant resolver that will be used for a large-scale domain scan and save its IP under `RESOLVER_DOMAIN_SCAN`.
 
 ### Domain list
 
 Provide a path to the list of domain names to be scanned with the `RESOLVER_DOMAIN_SCAN` and save the path under `DOMAIN_LIST`.
 
-## Triggering Extended DNS Errors
-
-### Create Subdomains
+## Domain Setup
 
 The domains below contain various misconfigurations and corner cases that may trigger extended DNS errors:
 
@@ -163,7 +147,7 @@ The domain names below are signed with very old algorithms or require other sett
 
 The list of created subdomains is stored in `data/misconfigured_subdomains.txt` (updated manually).
 
-### Test Resolvers
+## Resolver Scan
 
 The script below will request 4 resolver software installed and 3 public resolvers supporting EDE to resolve all our test domains:
 
@@ -171,7 +155,7 @@ The script below will request 4 resolver software installed and 3 public resolve
 $ ./scripts/resolver_scan.sh
 ```
 
-The results are written to `data/resolver_scan/YYYYMMDD/output.json`.
+All the results are written to `data/resolver_scan/YYYYMMDD/`.
 
 ## Domain Scan
 
@@ -180,3 +164,5 @@ The script below runs a large-scale scan of domain names using an EDE-compliant 
 ```bash
 $ ./scripts/domain_scan.sh
 ```
+
+All the results are written to `data/domain_scan/YYYYMMDD/`.
