@@ -135,7 +135,7 @@ for subdomain in ${subdomains[@]}; do
     if [[ $subdomain = "no-zsk" ]]; then
         # Find numbers of lines where the key is located
         line_start=$(grep -n 'DNSKEY.*256' $output_dir/db.$zone.signed | cut -f1 -d:)
-        line_end=$(grep -n 'ZSK' $output_dir/db.$zone.signed | cut -f1 -d:)
+        line_end=$(grep -n ' ZSK;' $output_dir/db.$zone.signed | cut -f1 -d:)
         sed -i "${line_start},${line_end}d" $output_dir/db.$zone.signed
     # Edit the part of the ZSK
     elif [[ $subdomain = "bad-zsk" ]]; then
@@ -164,7 +164,7 @@ for subdomain in ${subdomains[@]}; do
     elif [[ $subdomain = "no-ksk" ]]; then
         # Find numbers of lines where the key is located
         line_start=$(grep -n 'DNSKEY.*257' $output_dir/db.$zone.signed | cut -f1 -d:)
-        line_end=$(grep -n 'KSK' $output_dir/db.$zone.signed | cut -f1 -d:)
+        line_end=$(grep -n ' KSK;' $output_dir/db.$zone.signed | cut -f1 -d:)
         sed -i "${line_start},${line_end}d" $output_dir/db.$zone.signed
     fi
 
